@@ -1,10 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 
 import { numberOfDays, calendarData } from "@/utils/helpers";
+import { DrawerContext } from "@/stores/context/drawer";
 import { DAYS } from "@/utils/constant";
+import { calendarActions } from "@/stores/redux/calendar";
 import DateItem from "./DateItem";
 
 const Calendar = () => {
+  const { setDrawer } = useContext(DrawerContext);
+  const dispatch = useDispatch();
   const isMounted = useRef(false);
   const [calendar, setCalendar] = useState([]);
 
@@ -27,6 +32,11 @@ const Calendar = () => {
     // find and mark today
   }, [calendar]);
 
+  const dispatchPickedDate = (date) => {
+    dispatch(calendarActions.setPickedDate(date));
+    setDrawer();
+  };
+
   return (
     <div className="calendar">
       <ul className="grid grid-cols-7 border border-black">
@@ -42,7 +52,13 @@ const Calendar = () => {
       <div className="grid grid-cols-7">
         {calendar &&
           calendar.length > 0 &&
-          calendar.map((date, i) => <DateItem key={i} data={date} />)}
+          calendar.map((date, i) => (
+            <DateItem
+              key={i}
+              data={date}
+              onClick={dispatchPickedDate.bind(this)}
+            />
+          ))}
       </div>
     </div>
   );

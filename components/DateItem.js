@@ -1,4 +1,7 @@
-const DateItem = ({ data }) => {
+const DateItem = ({ data, onClick }) => {
+  const clickHandler = () => {
+    if (data.active) onClick(data);
+  };
   if (!data.date) {
     return <div className="w-full h-40" />;
   }
@@ -6,6 +9,7 @@ const DateItem = ({ data }) => {
     <div
       className="w-full h-40 border p-2"
       role={data.active ? "button" : "none"}
+      onClick={clickHandler}
     >
       <div className="flex justify-end">
         <strong

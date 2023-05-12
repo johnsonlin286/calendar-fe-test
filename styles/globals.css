@@ -1,3 +1,57 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.backdrop {
+  opacity: 1;
+  animation: backdropFadeIn .3s ease-in-out forwards;
+}
+.backdrop.hide {
+  opacity: 0;
+  animation: backdropFadeOut .3s ease-in-out forwards;
+}
+
+.drawer {
+  left: 0%;
+  animation: drawerSlideIn .3s ease-in-out forwards;
+}
+.drawer.hide {
+  left: -50%;
+  animation: drawerSlideOut .3s ease-in-out forwards;
+}
+
+@keyframes backdropFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes backdropFadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes drawerSlideIn {
+  0% {
+    left: -50%;
+  }
+  100% {
+    left: 0%;
+  }
+}
+
+@keyframes drawerSlideOut {
+  0% {
+    left: 0%;
+  }
+  100% {
+    left: -50%;
+  }
+}

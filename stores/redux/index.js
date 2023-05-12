@@ -4,14 +4,17 @@ import { persistReducer, persistStore } from "redux-persist";
 import thunk from "redux-thunk";
 
 import eventSliceReducer from "./event";
+import calendarSliceReducer from "./calendar";
 
 const persistConfig = {
   key: "root",
   storage,
+  blacklist: ["calendar"],
 };
 
 const rootReducer = combineReducers({
   event: eventSliceReducer,
+  calendar: calendarSliceReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
