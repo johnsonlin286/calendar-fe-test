@@ -1,7 +1,9 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import IconButton from "./IconButton";
+import EventForm from "./EventForm";
 
-const EventItem = ({ data, onDelete }) => {
+const EventItem = ({ date, data, onDelete }) => {
+  const [openEditForm, setOpenEditForm] = useState(false);
   const backgroundColor = () => {
     switch (data.color) {
       case "red":
@@ -44,19 +46,31 @@ const EventItem = ({ data, onDelete }) => {
   };
 
   return (
-    <div
-      className={`event-item flex justify-between items-center rounded-md ${backgroundColor()} text-white py-2 px-4 mb-2`}
-    >
-      <div className="flex-1">{data.title}</div>
-      <div className="flex-1">{`${data.time} ${data.meridiem}`}</div>
-      <div className="flex justify-end flex-1">
-        <IconButton name="Edit" icon="bi:pencil-square" onClick={() => null} />
-        <IconButton
-          name="Delete"
-          icon="bi:trash3"
-          onClick={() => onDelete(data.id)}
-        />
+    <div className={`event-item rounded-md ${backgroundColor()}`}>
+      <div className="flex justify-between items-center text-white py-2 px-4 mb-2">
+        <div className="flex-1">{data.title}</div>
+        <div className="flex-1">{`${data.time} ${data.meridiem}`}</div>
+        <div className="flex justify-end flex-1">
+          <IconButton
+            name="Edit"
+            icon="bi:pencil-square"
+            onClick={() => setOpenEditForm(true)}
+          />
+          <IconButton
+            name="Delete"
+            icon="bi:trash3"
+            onClick={() => onDelete(data.id)}
+          />
+        </div>
       </div>
+      {openEditForm && (
+        <EventForm
+          date={date}
+          data={data}
+          isEdit
+          onDismiss={() => setOpenEditForm(false)}
+        />
+      )}
     </div>
   );
 };

@@ -21,6 +21,7 @@ const EventList = ({ date, events }) => {
         events.map((item, i) => (
           <EventItem
             key={i}
+            date={date}
             data={item}
             onDelete={deleteEventHandler.bind(this)}
           />

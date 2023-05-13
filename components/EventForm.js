@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { uuid } from "uuidv4";
 
@@ -7,8 +7,9 @@ import { randomColor } from "@/utils/helpers";
 import TextInput from "./TextInput";
 import SelectOpt from "./SelectOpt";
 import Button from "./Button";
+import IconButton from "./IconButton";
 
-const EventForm = ({ date, isEdit }) => {
+const EventForm = ({ date, data, isEdit, onDismiss }) => {
   const [formState, setFormState] = useState({
     title: "",
     time: "1",
@@ -17,6 +18,12 @@ const EventForm = ({ date, isEdit }) => {
   });
   const [errMsg, setErrMsg] = useState({});
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (data) {
+      setFormState(() => ({ ...data }));
+    }
+  }, [data]);
 
   const timeOptions = useMemo(() => {
     const options = [];
@@ -64,15 +71,26 @@ const EventForm = ({ date, isEdit }) => {
   };
 
   const dispatchSubmitEvent = () => {
-    const payload = {
-      date: date,
-      event: {
-        id: uuid(),
-        ...formState,
-      },
-    };
-    payload.event.color = randomColor();
-    dispatch(eventsActions.addEvents(payload));
+    if (!isEdit) {
+      const payload = {
+        date: date,
+        event: {
+          id: uuid(),
+          ...formState,
+        },
+      };
+      payload.event.color = randomColor();
+      dispatch(eventsActions.addEvents(payload));
+    } else {
+      const payload = {
+        date: date,
+        editedEvent: {
+          ...formState,
+        },
+      };
+      dispatch(eventsActions.editEvent(payload));
+      onDismiss();
+    }
     resetFormState();
   };
 
@@ -90,9 +108,12 @@ const EventForm = ({ date, isEdit }) => {
       className="bg-white border rounded-md shadow py-2 px-4 mb-2"
       onSubmit={formValidation.bind(this)}
     >
-      <h5 className="text-lg font-semibold border-b pb-2 mb-3">
-        {!isEdit ? "Add" : "Edit"} Event
-      </h5>
+      <div className="flex justify-between border-b pb-2 mb-3">
+        <h5 className="text-lg font-semibold">
+          {!isEdit ? "Add" : "Edit"} Event
+        </h5>
+        {isEdit && <IconButton icon="bi:x-circle" onClick={onDismiss} />}
+      </div>
       <TextInput
         id="title"
         name="title"
@@ -128,7 +149,7 @@ const EventForm = ({ date, isEdit }) => {
       <TextInput
         id="email"
         name="email"
-        label="Invitee"
+        label="Guests"
         placeholder="ex: john_doe@email.com, marry_jane@email.com, ..."
         value={formState.email}
         onChange={updateFormState.bind(this, "email")}

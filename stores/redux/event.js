@@ -73,9 +73,15 @@ const eventsSlice = createSlice({
     },
     editEvent(state, action) {
       if (action.payload) {
-        const { date, eventId, editEvent } = action.payload;
+        const { date, editedEvent } = action.payload;
         const isExist = state.savedEvents.find((event) => event.date === date);
         if (!isExist) return;
+        const indexOfTarget = isExist.events.findIndex(
+          (event) => event.id === editedEvent.id
+        );
+        isExist.events[indexOfTarget] = {
+          ...editedEvent,
+        };
       }
     },
   },
