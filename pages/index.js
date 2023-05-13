@@ -4,7 +4,7 @@ import Drawer from "@/components/Drawer";
 
 export default function Home() {
   return (
-    <Layout>
+    <Layout title="calendar-fe-test">
       <Calendar />
       <Drawer />
     </Layout>

@@ -1,4 +1,3 @@
-// import { persistor, store } from "@/stores/redux";
 import Store, { persistor } from "@/stores/redux";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
@@ -15,10 +14,5 @@ export default function App({ Component, pageProps }) {
         </DrawerContextProvider>
       </PersistGate>
     </Provider>
-    // <Provider store={Store}>
-    //   <DrawerContextProvider>
-    //     <Component {...pageProps} />
-    //   </DrawerContextProvider>
-    // </Provider>
   );
 }
