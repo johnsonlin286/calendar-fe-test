@@ -30,7 +30,7 @@ const SelectOpt = ({
       ) : (
         <p>no options given</p>
       )}
-      {isInvalid && <span>{isInvalid}</span>}
+      {isInvalid && <span className="text-xs text-red-500">{isInvalid}</span>}
     </div>
   );
 };

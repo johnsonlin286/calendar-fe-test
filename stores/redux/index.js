@@ -3,8 +3,8 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import thunk from "redux-thunk";
 
-import eventSliceReducer from "./event";
 import calendarSliceReducer from "./calendar";
+import eventsSliceReducer from "./event";
 
 const persistConfig = {
   key: "root",
@@ -13,15 +13,17 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  event: eventSliceReducer,
   calendar: calendarSliceReducer,
+  events: eventsSliceReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export const store = configureStore({
+const store = configureStore({
   reducer: persistedReducer,
   middleware: [thunk],
 });
 
 export const persistor = persistStore(store);
+
+export default store;

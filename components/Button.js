@@ -1,7 +1,5 @@
-import { useMemo } from "react";
-
-const Button = ({ children, color, outline, onClick, className }) => {
-  const styles = useMemo(() => {
+const Button = ({ children, type, color, outline, onClick, className }) => {
+  const styles = () => {
     switch (color) {
       case "red":
         return !outline
@@ -24,11 +22,12 @@ const Button = ({ children, color, outline, onClick, className }) => {
           ? "border-black bg-black text-white"
           : "border-black text-black";
     }
-  }, [color, outline]);
+  };
   return (
     <button
+      type={type || "button"}
       onClick={onClick}
-      className={`bg-white border rounded-md ${styles} hover:opacity-80 font-medium py-2 px-3 ${
+      className={`border rounded-md ${styles()} hover:opacity-80 font-medium py-2 px-3 ${
         className || ""
       }`}
     >

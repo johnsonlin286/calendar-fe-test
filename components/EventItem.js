@@ -1,8 +1,9 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
+import IconButton from "./IconButton";
 
-const EventItem = ({ data, color }) => {
-  const backgroundColor = useMemo(() => {
-    switch (color) {
+const EventItem = ({ data, onDelete }) => {
+  const backgroundColor = () => {
+    switch (data.color) {
       case "red":
         return "bg-red-500";
       case "orange":
@@ -40,15 +41,22 @@ const EventItem = ({ data, color }) => {
       default:
         return "bg-black";
     }
-  }, [color]);
-  // if (!data) return null;
+  };
+
   return (
     <div
-      className={`event-item flex justify-between items-center rounded-md ${backgroundColor} text-white py-2 px-4 mb-2`}
+      className={`event-item flex justify-between items-center rounded-md ${backgroundColor()} text-white py-2 px-4 mb-2`}
     >
-      <div>title</div>
-      <div>time</div>
-      <div>edit | delete</div>
+      <div className="flex-1">{data.title}</div>
+      <div className="flex-1">{`${data.time} ${data.meridiem}`}</div>
+      <div className="flex justify-end flex-1">
+        <IconButton name="Edit" icon="bi:pencil-square" onClick={() => null} />
+        <IconButton
+          name="Delete"
+          icon="bi:trash3"
+          onClick={() => onDelete(data.id)}
+        />
+      </div>
     </div>
   );
 };

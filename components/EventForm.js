@@ -1,15 +1,22 @@
 import { useMemo, useState } from "react";
+import { useDispatch } from "react-redux";
+import { uuid } from "uuidv4";
+
+import { eventsActions } from "@/stores/redux/event";
+import { randomColor } from "@/utils/helpers";
 import TextInput from "./TextInput";
 import SelectOpt from "./SelectOpt";
 import Button from "./Button";
 
-const EventForm = () => {
+const EventForm = ({ date, isEdit }) => {
   const [formState, setFormState] = useState({
     title: "",
-    time: "",
-    meridiem: "",
+    time: "1",
+    meridiem: "AM",
     email: "",
   });
+  const [errMsg, setErrMsg] = useState({});
+  const dispatch = useDispatch();
 
   const timeOptions = useMemo(() => {
     const options = [];
@@ -28,13 +35,64 @@ const EventForm = () => {
 
   const formValidation = (e) => {
     e.preventDefault();
+    const err = {};
+    if (formState.title.trim().length === 0) {
+      err.title = "required!";
+    } else delete err.title;
+    if (!formState.time) {
+      err.time = "required!";
+    } else delete err.time;
+    if (!formState.meridiem) {
+      err.meridiem = "required!";
+    } else delete err.meridiem;
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (formState.email.trim().length === 0) {
+      err.email = "required!";
+    } else if (
+      formState.email
+        .split(",")
+        .map((email) => regex.test(email.trim()))
+        .includes(false)
+    ) {
+      err.email = "please check Invitee emails";
+    } else delete err.email;
+    setErrMsg(err);
+    if (Object.keys(err).length > 0) {
+      return;
+    }
+    dispatchSubmitEvent();
   };
+
+  const dispatchSubmitEvent = () => {
+    const payload = {
+      date: date,
+      event: {
+        id: uuid(),
+        ...formState,
+      },
+    };
+    payload.event.color = randomColor();
+    dispatch(eventsActions.addEvents(payload));
+    resetFormState();
+  };
+
+  const resetFormState = () => {
+    setFormState({
+      title: "",
+      time: "1",
+      meridiem: "AM",
+      email: "",
+    });
+  };
+
   return (
     <form
       className="bg-white border rounded-md shadow py-2 px-4 mb-2"
       onSubmit={formValidation.bind(this)}
     >
-      <h5 className="text-lg font-semibold border-b pb-2 mb-3">Add an Event</h5>
+      <h5 className="text-lg font-semibold border-b pb-2 mb-3">
+        {!isEdit ? "Add" : "Edit"} Event
+      </h5>
       <TextInput
         id="title"
         name="title"
@@ -42,6 +100,7 @@ const EventForm = () => {
         placeholder="Event Name"
         value={formState.title}
         onChange={updateFormState.bind(this, "title")}
+        isInvalid={errMsg.title}
         className="w-8/12 mb-3"
       />
       <div className="flex flex-row items-center mb-3">
@@ -52,6 +111,7 @@ const EventForm = () => {
           options={timeOptions}
           selected={formState.time}
           onChange={updateFormState.bind(this, "time")}
+          isInvalid={errMsg.time}
           className="w-3/12 mr-2"
         />
         <SelectOpt
@@ -61,6 +121,7 @@ const EventForm = () => {
           options={["AM", "PM"]}
           selected={formState.meridiem}
           onChange={updateFormState.bind(this, "meridiem")}
+          isInvalid={errMsg.meridiem}
           className="w-2/12 ml-2"
         />
       </div>
@@ -71,14 +132,23 @@ const EventForm = () => {
         placeholder="ex: john_doe@email.com, marry_jane@email.com, ..."
         value={formState.email}
         onChange={updateFormState.bind(this, "email")}
+        isInvalid={errMsg.email}
         className="w-8/12 mb-8"
       />
       <div className="flex justify-end w-8/12 mb-6">
-        <Button color="blue" outline onClick={() => null} className="mr-6">
-          Reset Form
-        </Button>
-        <Button color="blue" onClick={() => null}>
-          Add Event
+        {!isEdit && (
+          <Button
+            type="button"
+            color="blue"
+            outline
+            onClick={resetFormState}
+            className="mr-6"
+          >
+            Reset Form
+          </Button>
+        )}
+        <Button type="submit" color="blue">
+          {!isEdit ? "Add" : "Edit"} Event
         </Button>
       </div>
     </form>

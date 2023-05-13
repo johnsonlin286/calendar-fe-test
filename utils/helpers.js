@@ -36,3 +36,8 @@ export const calendarData = (dates) => {
 
   return calendar;
 };
+
+export const randomColor = () => {
+  const random = Math.floor(Math.random() * COLORS.length);
+  return COLORS[random];
+};

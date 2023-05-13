@@ -23,7 +23,7 @@ const TextInput = ({
         onChange={(e) => onChange(e.currentTarget.value)}
         className="border-b border-black w-full p-2 focus:outline-none placeholder:text-sm"
       />
-      {isInvalid && <span>{isInvalid}</span>}
+      {isInvalid && <span className="text-xs text-red-500">{isInvalid}</span>}
     </div>
   );
 };
