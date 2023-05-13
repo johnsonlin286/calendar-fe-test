@@ -1,6 +1,10 @@
+import { useContext } from "react";
+
+import { DrawerContext } from "@/stores/context/drawer";
 import Head from "next/head";
 
 const Layout = ({ title, children }) => {
+  const { visible } = useContext(DrawerContext);
   return (
     <>
       <Head>
@@ -9,7 +13,9 @@ const Layout = ({ title, children }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={`container`}>{children}</main>
+      <main className={visible ? "fixed w-full h-full" : ""}>
+        <section className="container">{children}</section>
+      </main>
     </>
   );
 };

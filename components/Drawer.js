@@ -1,10 +1,11 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { DrawerContext } from "@/stores/context/drawer";
 import { calendarActions } from "@/stores/redux/calendar";
 import IconButton from "./IconButton";
 import EventItem from "./EventItem";
+import EventForm from "./EventForm";
 
 const Drawer = () => {
   const { visible, hideDrawer } = useContext(DrawerContext);
@@ -39,7 +40,7 @@ const Drawer = () => {
       >
         {pickedDate && (
           <>
-            <div className="flex justify-between items-center border-b pb-6 mb-8">
+            <div className="flex justify-between items-center border-b pb-6">
               <h2 className="text-4xl font-extrabold">
                 {`${pickedDate.day}, ${pickedDate.date}-${pickedDate.month}-${pickedDate.year}`}
               </h2>
@@ -49,10 +50,13 @@ const Drawer = () => {
                 onClick={onDismissDrawer}
               />
             </div>
-            <h3 className="text-3xl font-bold mb-6">Events:</h3>
-            <EventItem color={"red"} />
-            <EventItem color={"green"} />
-            <EventItem color={"blue"} />
+            <div className="h-[calc(100%_-_60px)] overflow-auto pt-3">
+              <h3 className="text-3xl font-bold mb-6">Events:</h3>
+              <EventItem color={"red"} />
+              <EventItem color={"green"} />
+              <EventItem color={"blue"} />
+              <EventForm />
+            </div>
           </>
         )}
       </div>
