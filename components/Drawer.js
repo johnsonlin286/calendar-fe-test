@@ -50,7 +50,7 @@ const Drawer = () => {
       />
       <div
         ref={drawerElm}
-        className="drawer fixed top-0 left-0 w-1/2 h-full bg-white rounded-r-lg shadow-xl py-6 px-8"
+        className="drawer fixed top-0 left-0 w-5/12 h-full bg-white rounded-r-lg shadow-xl py-6 px-8"
       >
         {pickedDate && (
           <>

@@ -40,9 +40,9 @@ const DateItem = ({ data, onClick }) => {
       <div className="flex justify-end">
         <strong
           className={`flex justify-center items-center w-8 h-8 ${
-            data.day.toLowerCase() === "sunday" ? "text-red-400" : ""
+            data.day.toLowerCase() === "sunday" ? "text-red-400" : "text-black"
           } ${data.today ? "bg-red-900 text-white rounded-full" : ""} ${
-            !data.active ? "text-gray-300" : ""
+            !data.active ? "text-opacity-20" : ""
           } p-2`}
         >
           {data.date || ""}

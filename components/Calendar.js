@@ -28,12 +28,7 @@ const Calendar = () => {
       today.getDate()
     );
     setCalendar(() => calendarData(dates));
-  }, [isMounted]);
-
-  useEffect(() => {
-    if (calendar.length === 0) return;
-    // find and mark today
-  }, [calendar]);
+  }, [isMounted, setCalendar]);
 
   const dispatchPickedDate = (date) => {
     dispatch(calendarActions.setPickedDate(date));
