@@ -16,8 +16,7 @@ const EventList = ({ date, events }) => {
   return (
     <div className="h-[calc(100%_-_60px)] overflow-auto pt-3">
       <h3 className="text-3xl font-bold mb-6">Events:</h3>
-      {events &&
-        events.length > 0 &&
+      {events && events.length > 0 ? (
         events.map((item, i) => (
           <EventItem
             key={i}
@@ -25,7 +24,10 @@ const EventList = ({ date, events }) => {
             data={item}
             onDelete={deleteEventHandler.bind(this)}
           />
-        ))}
+        ))
+      ) : (
+        <p className="text-sm mb-4">No event yet, please add some!</p>
+      )}
       {events && events.length < 3 && <EventForm date={date} />}
     </div>
   );

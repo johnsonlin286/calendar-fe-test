@@ -43,7 +43,9 @@ const Calendar = () => {
         {DAYS.map((day, i) => (
           <li
             key={i}
-            className="text-center py-3 border-x border-black first:border-l-0 last:border-r-0"
+            className={`text-center font-semibold ${
+              day.toLowerCase() === "sunday" ? "text-red-400" : ""
+            } py-3 border-x border-black first:border-l-0 last:border-r-0`}
           >
             {day}
           </li>
