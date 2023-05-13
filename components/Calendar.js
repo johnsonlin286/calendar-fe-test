@@ -7,6 +7,8 @@ import { DAYS } from "@/utils/constant";
 import { calendarActions } from "@/stores/redux/calendar";
 import DateItem from "./DateItem";
 
+const enviroment = process.env.ENVIROMENT;
+
 const Calendar = () => {
   const { setDrawer } = useContext(DrawerContext);
   const dispatch = useDispatch();
@@ -14,7 +16,8 @@ const Calendar = () => {
   const [calendar, setCalendar] = useState([]);
 
   useEffect(() => {
-    if (!isMounted.current) {
+    // page mounted
+    if (enviroment === "develop" && !isMounted.current) {
       isMounted.current = true;
       return;
     }
